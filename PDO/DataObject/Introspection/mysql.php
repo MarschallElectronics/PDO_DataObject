@@ -89,7 +89,7 @@ class PDO_DataObject_Introspection_mysql extends PDO_DataObject_Introspection
         
         if (empty($cache[__CLASS__.'::'. __FUNCTION__])) {
              // FK first...
-             
+            
             $cache[__CLASS__.'::'. __FUNCTION__] =  $this->do
                 ->query("
                         
@@ -98,7 +98,7 @@ class PDO_DataObject_Introspection_mysql extends PDO_DataObject_Introspection
                             COLUMNS.COLUMN_NAME as name,
                             COLUMN_DEFAULT as default_value_raw,
                             DATA_TYPE as type,
-                            COALESCE(NUMERIC_PRECISION,CHARACTER_MAXIMUM_LENGTH) as len,
+                            NUMERIC_PRECISION as len,
                             CONCAT(
                                 EXTRA,  -- autoincrement...
                                 IF (IS_NULLABLE, '', ' not_null'),
@@ -108,8 +108,7 @@ class PDO_DataObject_Introspection_mysql extends PDO_DataObject_Introspection
                                 
                             )    as flags,
                             COALESCE(REFERENCED_TABLE_NAME,'') as fk_table,
-                            COALESCE(REFERENCED_COLUMN_NAME,'') as fk_column,
-                            ". time(). " as _prevent_cache
+                            COALESCE(REFERENCED_COLUMN_NAME,'') as fk_column
                             
                         FROM
                             INFORMATION_SCHEMA.COLUMNS
@@ -126,9 +125,6 @@ class PDO_DataObject_Introspection_mysql extends PDO_DataObject_Introspection
                 ")
                 ->fetchAllAssoc();
         }
-        
-        //var_Dump(count($cache[__CLASS__.'::'. __FUNCTION__]));
-        
         $records = array();
         foreach($cache[__CLASS__.'::'. __FUNCTION__] as $ar) {
             if ($ar['tablename'] != $string) {
