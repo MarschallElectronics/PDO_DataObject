@@ -1,5 +1,11 @@
 # PDO_DataObject
 
+ME-Repository: ssh://{user}@git.garmisch.net/srv/git/me.pdo_dataobject.git
+Fork von ME: https://github.com/MarschallElectronics/PDO_DataObject.git
+D.h. Änderungen auf Github und auf git.garmisch.net pushen!
+
+---------------------
+
 PDO replacement for PEAR's DB_DataObject
 
 Work has been funded by CentralNic Group plc 
