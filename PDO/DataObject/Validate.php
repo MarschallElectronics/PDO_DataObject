@@ -128,7 +128,8 @@ class PDO_DataObject_Validate
             // so issuing a runtime error like PEAR_Error is probably not appropriate..
             
             if  ($val & PDO_DataObject::INT) {
-                    if ( is_numeric($this->do->$key)) {
+										$mem = $this->do->$key;
+                    if (empty($mem) || strtolower($mem) == 'null' || is_numeric($mem)) {
                         continue;
                     }
                     $ret[$key] = "Value is not numeric";

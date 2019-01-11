@@ -9,4 +9,3 @@ tests/*.php
 tests/*.sh
 *.tgz
 *.tgz.tmp
-
