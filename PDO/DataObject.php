@@ -1491,12 +1491,28 @@
 			{
 				case 'mysql':
 					if ($manip && $start)
-					{
 						$this->raise("Mysql may not support offset in modification queries", self::ERROR_INVALIDARGS); // from PEAR DB?
-					}
+
 					$start = empty($start) ? '' : ($start . ',');
 					return "$sql LIMIT $start $count";
 				
+				case 'mssql':
+				case 'sqlsrv':
+					if ($manip)
+						$this->raise("Limit-Query:Mssql may not support offset,count in modification queries", self::ERROR_INVALIDARGS); // from PEAR DB?
+
+					$order_by = $this->_query['order_by'];
+					if (empty($order_by))
+						$this->raise("Limit-Query: Mssql may not support offset,count without ORDER BY", self::ERROR_INVALIDARGS); // from PEAR DB?
+					
+					if (!is_numeric($start))
+						$start = 0;
+					if (!is_numeric($count))
+						$this->raise("Limit-Query: Mssql: \$count has NO numeric Value!", self::ERROR_INVALIDARGS); // from PEAR DB?
+					
+					return $sql . ' OFFSET ' . $start . ' ROWS FETCH NEXT ' . $count . ' ROWS ONLY';
+					
+					break;
 				case 'sqlite':
 				case 'sqlite2':
 				case 'pgsql':
@@ -1523,8 +1539,6 @@
 				default:
 					$this->raise("The Database $drv, does not support limit queries - if you know how this can be added, please send a patch.", self::ERROR_INVALIDARGS); // from PEAR DB?
 			}
-			
-			
 		}
 		
 		/**
