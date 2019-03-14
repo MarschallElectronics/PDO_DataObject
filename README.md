@@ -1,8 +1,11 @@
 # PDO_DataObject
 
-ME-Repository: ssh://{user}@git.garmisch.net/srv/git/me.pdo_dataobject.git
-Fork von ME: https://github.com/MarschallElectronics/PDO_DataObject.git
-D.h. Änderungen auf Github und auf git.garmisch.net pushen!
+Fork von ME ! D.h. Änderungen auf Github und auf git.garmisch.net pushen!
+
+## Repositories
+
+* Github-Repository: https://github.com/MarschallElectronics/PDO_DataObject.git
+* Lokal-Repository: ssh://{user}@git.garmisch.net/srv/git/me.pdo_dataobject.git
 
 ---------------------
 
