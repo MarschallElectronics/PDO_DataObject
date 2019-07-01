@@ -3968,7 +3968,8 @@
 		 */
 		final function escape($string, $likeEscape = false)
 		{
-			$ret = trim($this->PDO()->quote($string), "'");
+			$ret = $this->PDO()->quote($string);
+			$ret = substr($ret, 1, strlen($ret) - 2);
 			if ($likeEscape)
 			{
 				$ret = str_replace(array(
