@@ -200,7 +200,7 @@
 		 * $old_array = PDO_DataObject_Generator::config( array( 'schema_location' => '' ));
 		 *
 		 *
-		 * @param   array  key/value
+		 * @param array  key/value
 		 * @param bool $value
 		 * @return array|mixed - the current config (or previous value/config)
 		 * @throws PDO_DataObject_Exception
@@ -407,45 +407,47 @@
 			// declare a temporary table to be filled with matching tables names
 			$tmp_table = array();
 			
-			
-			foreach ($tables as $table)
+			if (is_array($tables))
 			{
-				if ($options['include_regex'] && !preg_match($options['include_regex'], $table))
-				{
-					$this->debug("SKIPPING (include_regex) : $table", __FUNCTION__, 1);
-					continue;
-				}
 				
-				if ($options['exclude_regex'] && preg_match($options['exclude_regex'], $table))
+				foreach ($tables as $table)
 				{
-					$this->debug("SKIPPING (exclude_regex) : $table", __FUNCTION__, 1);
-					continue;
-				}
-				
-				$strip = $options['strip_schema'];
-				$strip = (is_string($strip) && strtolower($strip) == 'true') ? true : $strip;
-				
-				// postgres strip the schema bit from the
-				if (!empty($strip))
-				{
-					
-					if (!is_string($strip) || preg_match($strip, $table))
+					if ($options['include_regex'] && !preg_match($options['include_regex'], $table))
 					{
-						$bits  = explode('.', $table, 2);
-						$table = $bits[0];
-						if (count($bits) > 1)
+						$this->debug("SKIPPING (include_regex) : $table", __FUNCTION__, 1);
+						continue;
+					}
+					
+					if ($options['exclude_regex'] && preg_match($options['exclude_regex'], $table))
+					{
+						$this->debug("SKIPPING (exclude_regex) : $table", __FUNCTION__, 1);
+						continue;
+					}
+					
+					$strip = $options['strip_schema'];
+					$strip = (is_string($strip) && strtolower($strip) == 'true') ? true : $strip;
+					
+					// postgres strip the schema bit from the
+					if (!empty($strip))
+					{
+						
+						if (!is_string($strip) || preg_match($strip, $table))
 						{
-							$table = $bits[1];
+							$bits  = explode('.', $table, 2);
+							$table = $bits[0];
+							if (count($bits) > 1)
+							{
+								$table = $bits[1];
+							}
 						}
 					}
+					$this->debug("EXTRACTING : $table");
+					
+					// we do not quote table - as these are now internal methods - and it is done by the introspection classes
+					$this->tables[ $table ] = $this->newTable($table);
 				}
-				$this->debug("EXTRACTING : $table");
-				
-				// we do not quote table - as these are now internal methods - and it is done by the introspection classes
-				$this->tables[ $table ] = $this->newTable($table);
-				
-				
 			}
+			
 			return array_keys($this->tables);
 			
 			//print_r($this->_definitions);
