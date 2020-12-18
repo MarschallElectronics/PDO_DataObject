@@ -3605,7 +3605,7 @@
 		 * @access public
 		 * @category crud
 		 */
-		final function delete($useWhere = false)
+		public function delete($useWhere = false)
 		{
 			
 			$PDO              = $this->PDO();
